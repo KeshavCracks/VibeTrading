@@ -21,14 +21,24 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 import { SWARM_PRESETS, type SwarmPreset, type SwarmWorker } from '@/lib/mock-data'
 
-const STATUS_META = {
+type WorkerStatus = SwarmWorker['status']
+
+interface StatusMeta {
+  icon: typeof Clock
+  color: string
+  bg: string
+  label: string
+  spin?: boolean
+}
+
+const STATUS_META: Record<WorkerStatus, StatusMeta> = {
   waiting: { icon: Clock, color: 'text-muted-foreground', bg: 'bg-muted', label: 'Waiting' },
   running: { icon: Loader2, color: 'text-chart-2', bg: 'bg-chart-2/10', label: 'Running', spin: true },
   done: { icon: CheckCircle2, color: 'text-emerald-500', bg: 'bg-emerald-500/10', label: 'Done' },
   failed: { icon: XCircle, color: 'text-rose-500', bg: 'bg-rose-500/10', label: 'Failed' },
   blocked: { icon: AlertCircle, color: 'text-amber-500', bg: 'bg-amber-500/10', label: 'Blocked' },
   retrying: { icon: RefreshCw, color: 'text-chart-5', bg: 'bg-chart-5/10', label: 'Retrying', spin: true },
-} as const
+}
 
 export function Swarm() {
   const [activePreset, setActivePreset] = React.useState<SwarmPreset>(SWARM_PRESETS[0])
@@ -44,15 +54,20 @@ export function Swarm() {
   // Simulate swarm execution
   async function runSwarm() {
     setRunning(true)
-    const fresh = activePreset.workers.map((w) => ({ ...w, status: 'waiting' as const, output: undefined }))
+    const fresh: SwarmWorker[] = activePreset.workers.map((w): SwarmWorker => ({
+      ...w,
+      status: 'waiting',
+      output: undefined,
+    }))
     setWorkers(fresh)
 
     for (let i = 0; i < fresh.length; i++) {
       const w = fresh[i]
       // Check deps done
-      const depsDone = w.dependencies.every((d) =>
-        fresh.find((x) => x.id === d)?.status === 'done'
-      )
+      const depsDone = w.dependencies.every((d) => {
+        const dep = fresh.find((x) => x.id === d)
+        return dep ? dep.status === 'done' : false
+      })
       if (!depsDone) {
         // mark blocked then continue (shouldn't happen in our DAG)
         fresh[i] = { ...w, status: 'blocked' }
@@ -70,7 +85,13 @@ export function Swarm() {
   }
 
   function reset() {
-    setWorkers(activePreset.workers.map((w) => ({ ...w, status: 'waiting' as const, output: undefined })))
+    setWorkers(
+      activePreset.workers.map((w): SwarmWorker => ({
+        ...w,
+        status: 'waiting',
+        output: undefined,
+      }))
+    )
     setSelectedWorker(null)
   }
 

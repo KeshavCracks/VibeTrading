@@ -41,10 +41,12 @@ export async function POST(req: NextRequest) {
     const completion = await zai.chat.completions.create({
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
-        ...messages.map((m: { role: string; content: string }) => ({
-          role: m.role,
-          content: m.content,
-        })),
+        ...messages.map(
+          (m: { role: "system" | "user" | "assistant"; content: string }) => ({
+            role: m.role,
+            content: m.content,
+          })
+        ),
       ],
       temperature: 0.6,
       max_tokens: 1200,

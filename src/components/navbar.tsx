@@ -72,7 +72,7 @@ export function Navbar() {
             <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
               <TrendingUp className="w-4 h-4 text-primary-foreground" />
             </div>
-            <div className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <div className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-foreground animate-pulse" />
           </div>
           <span className="text-base tracking-tight">
             Vibe<span className="text-primary">Trading</span>

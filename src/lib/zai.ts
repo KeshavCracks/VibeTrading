@@ -1,10 +1,12 @@
-import ZAI, { type ZAI as ZAIType } from "z-ai-web-dev-sdk";
+import ZAI from "z-ai-web-dev-sdk";
 import { promises as fs } from "fs";
 import path from "path";
 import os from "os";
 
-let cached: ZAIType | null = null;
-let initPromise: Promise<ZAIType> | null = null;
+type ZAIInstance = Awaited<ReturnType<typeof ZAI.create>>;
+
+let cached: ZAIInstance | null = null;
+let initPromise: Promise<ZAIInstance> | null = null;
 
 /**
  * Returns a configured ZAI client.
@@ -17,7 +19,7 @@ let initPromise: Promise<ZAIType> | null = null;
  * If env vars are present they take priority and we write a temporary
  * config file the SDK can read.
  */
-export async function getZai(): Promise<ZAIType> {
+export async function getZai(): Promise<ZAIInstance> {
   if (cached) return cached;
   if (initPromise) return initPromise;
 

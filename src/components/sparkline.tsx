@@ -45,7 +45,7 @@ export function Sparkline({
   const areaPath = `${path} L ${width},${height} L 0,${height} Z`
 
   const isUp = data[data.length - 1] >= data[0]
-  const stroke = color ?? (isUp ? 'oklch(0.7 0.18 158)' : 'oklch(0.7 0.22 16)')
+  const stroke = color ?? (isUp ? 'var(--foreground)' : 'oklch(0.7 0.22 16)')
 
   return (
     <svg

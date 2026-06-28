@@ -37,13 +37,13 @@ export function Hero() {
           className="flex flex-col items-center text-center"
         >
           <Badge variant="secondary" className="mb-6 gap-1.5 py-1.5 px-3">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-foreground animate-pulse" />
             Open-source · MIT Licensed · Vercel-ready
           </Badge>
 
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-balance max-w-4xl mb-6">
             Your personal{' '}
-            <span className="bg-gradient-to-r from-primary via-emerald-500 to-chart-2 bg-clip-text text-transparent animate-gradient">
+            <span className="bg-gradient-to-r from-foreground via-foreground/70 to-foreground/40 bg-clip-text text-transparent animate-gradient">
               AI trading agent
             </span>{' '}
             in the browser

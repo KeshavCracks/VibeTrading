@@ -7,12 +7,12 @@
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_4-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-000000?style=for-the-badge&logo=shadcnui&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Vercel_Ready-000000?style=for-the-badge&logo=vercel&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-emerald?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-000000?style=for-the-badge)
 
 **An open-source AI-powered trading research workspace that lives in your browser.**
 Chat with an autonomous agent, explore 456+ alpha factors, run paper trades, dissect your broker journal, and orchestrate multi-agent swarms — all from a single, fast, interactive web app.
 
-[Features](#-features) · [Demo](#-demo) · [Quick Start](#-quick-start) · [Deploy on Vercel](#-deploy-on-vercel) · [Architecture](#-architecture) · [Inspiration](#-inspiration)
+[Features](#-features) · [Screenshots](#-screenshots) · [Quick Start](#-quick-start) · [Deploy on Vercel](#-deploy-on-vercel) · [Architecture](#-architecture) · [Inspiration](#-inspiration)
 
 </div>
 
@@ -26,25 +26,31 @@ Where the original is a heavy, Dockerized, multi-process Python stack (FastAPI +
 
 The goal: a polished, interactive, deploy-anywhere showcase that demonstrates full-stack AI product thinking, not just a chatbot.
 
-## Demo
+## Screenshots
 
-> Live screenshots of the deployed app:
+### Hero & Live Ticker
+![Hero](./public/screenshots/hero.png)
 
-| Hero & Live Ticker | Market Dashboard |
-|:---:|:---:|
-| ![Hero](./public/screenshots/hero.png) | ![Dashboard](./public/screenshots/dashboard.png) |
+### Market Dashboard
+![Dashboard](./public/screenshots/dashboard.png)
 
-| Alpha Zoo (456 factors) | AI Agent Chat |
-|:---:|:---:|
-| ![Alpha Zoo](./public/screenshots/swarm.png) | ![Agent](./public/screenshots/paper.png) |
+### AI Agent Chat
+![Agent](./public/screenshots/agent.png)
 
-| Swarm DAG Visualizer | Strategy Builder + Backtest |
-|:---:|:---:|
-| ![Swarm](./public/screenshots/swarm.png) | ![Backtest](./public/screenshots/backtest.png) |
+### Alpha Zoo — 456 Factors
+![Alpha Zoo](./public/screenshots/alpha-zoo.png)
 
-| Shadow Account Analysis |
-|:---:|
-| ![Shadow Account](./public/screenshots/shadow.png) |
+### Paper Trading Arena
+![Paper Trading](./public/screenshots/paper-trading.png)
+
+### Shadow Account — Behavioral Bias Analyzer
+![Shadow Account](./public/screenshots/shadow-account.png)
+
+### Multi-Agent Swarm Visualizer
+![Swarm](./public/screenshots/swarm.png)
+
+### Strategy Builder & Backtester
+![Strategy Builder](./public/screenshots/strategy-builder.png)
 
 ## Features
 
@@ -93,7 +99,7 @@ Compose a strategy from a library of 15 building blocks across 5 categories (ent
 - Observations and a recommendation
 
 ### Polished UX
-- **Dark mode by default** with light mode toggle
+- **Dark mode by default** with light mode toggle — monochrome / true-black aesthetic
 - **Framer Motion** entrance animations, floating sparkline cards, animated counters
 - **Responsive** — works on mobile, tablet, desktop
 - **Sticky footer** that respects viewport height
@@ -283,6 +289,10 @@ Edit `SWARM_PRESETS` in `src/lib/mock-data.ts`. Each preset is a DAG of workers 
 ### Customize the agent prompt
 
 Edit `SYSTEM_PROMPT` in `src/app/api/agent/route.ts`. The agent is grounded in your portfolio context, which you can replace with real data.
+
+### Customize the color scheme
+
+All theme tokens live in `src/app/globals.css` under `:root` (light) and `.dark` (dark). The current default is a true-black monochrome aesthetic — change the `--primary`, `--accent`, and `--chart-*` OKLCH values to suit your brand.
 
 ## Inspiration
 

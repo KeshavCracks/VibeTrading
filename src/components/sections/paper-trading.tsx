@@ -167,14 +167,12 @@ export function PaperTrading() {
               <div className="grid grid-cols-2 gap-2">
                 <Button
                   variant={side === 'buy' ? 'default' : 'outline'}
-                  className={cn(side === 'buy' && 'bg-emerald-600 hover:bg-emerald-700 text-white')}
                   onClick={() => setSide('buy')}
                 >
                   BUY
                 </Button>
                 <Button
                   variant={side === 'sell' ? 'default' : 'outline'}
-                  className={cn(side === 'sell' && 'bg-rose-600 hover:bg-rose-700 text-white')}
                   onClick={() => setSide('sell')}
                 >
                   SELL
@@ -326,8 +324,8 @@ export function PaperTrading() {
                   <AreaChart data={history} margin={{ top: 8, right: 0, left: 0, bottom: 0 }}>
                     <defs>
                       <linearGradient id="grad-equity" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="oklch(0.7 0.18 158)" stopOpacity={0.4} />
-                        <stop offset="100%" stopColor="oklch(0.7 0.18 158)" stopOpacity={0} />
+                        <stop offset="0%" stopColor="var(--foreground)" stopOpacity={0.35} />
+                        <stop offset="100%" stopColor="var(--foreground)" stopOpacity={0} />
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
@@ -337,7 +335,7 @@ export function PaperTrading() {
                       contentStyle={{ background: 'var(--popover)', border: '1px solid var(--border)', borderRadius: 8, fontSize: 12 }}
                       formatter={(v: number) => `$${v.toLocaleString('en-US', { minimumFractionDigits: 0 })}`}
                     />
-                    <Area type="monotone" dataKey="value" stroke="oklch(0.7 0.18 158)" strokeWidth={2} fill="url(#grad-equity)" />
+                    <Area type="monotone" dataKey="value" stroke="var(--foreground)" strokeWidth={2} fill="url(#grad-equity)" />
                   </AreaChart>
                 </ResponsiveContainer>
               </CardContent>

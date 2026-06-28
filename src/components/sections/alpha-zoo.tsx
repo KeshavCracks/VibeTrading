@@ -13,10 +13,10 @@ import { cn } from '@/lib/utils'
 import { ALPHAS, type Alpha, familyStats, categoryStats } from '@/lib/alphas'
 
 const FAMILY_META = {
-  Qlib158: { icon: Atom, color: 'oklch(0.7 0.18 158)', label: 'Qlib158' },
-  alpha101: { icon: Layers, color: 'oklch(0.7 0.18 200)', label: 'alpha101' },
-  GTJA191: { icon: FlaskConical, color: 'oklch(0.75 0.18 80)', label: 'GTJA191' },
-  Academic: { icon: GraduationCap, color: 'oklch(0.7 0.22 300)', label: 'Academic' },
+  Qlib158: { icon: Atom, color: 'oklch(0.96 0.002 240)', label: 'Qlib158' },
+  alpha101: { icon: Layers, color: 'oklch(0.70 0.005 240)', label: 'alpha101' },
+  GTJA191: { icon: FlaskConical, color: 'oklch(0.55 0.005 240)', label: 'GTJA191' },
+  Academic: { icon: GraduationCap, color: 'oklch(0.40 0.005 240)', label: 'Academic' },
 }
 
 const STATUS_COLORS = {
@@ -112,9 +112,11 @@ export function AlphaZoo() {
                   cursor={{ fill: 'var(--muted)', opacity: 0.4 }}
                 />
                 <Bar dataKey="count" radius={[4, 4, 0, 0]}>
-                  {catStats.map((c, i) => (
-                    <Cell key={i} fill={`oklch(0.7 0.18 ${(i * 36) % 360})`} />
-                  ))}
+                  {catStats.map((c, i) => {
+                    // Grayscale gradient across categories
+                    const lightness = 0.95 - (i / catStats.length) * 0.55
+                    return <Cell key={i} fill={`oklch(${lightness.toFixed(2)} 0.005 240)`} />
+                  })}
                 </Bar>
               </BarChart>
             </ResponsiveContainer>

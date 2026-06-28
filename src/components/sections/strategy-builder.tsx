@@ -61,11 +61,11 @@ const BLOCK_LIBRARY: Array<{ type: BlockType; name: string; param: string; defau
 ]
 
 const TYPE_META: Record<BlockType, { color: string; icon: typeof Boxes; label: string }> = {
-  entry: { color: 'oklch(0.7 0.18 158)', icon: ArrowRight, label: 'Entry' },
-  exit: { color: 'oklch(0.7 0.22 16)', icon: ArrowRight, label: 'Exit' },
-  risk: { color: 'oklch(0.75 0.18 80)', icon: Settings2, label: 'Risk' },
-  filter: { color: 'oklch(0.7 0.18 200)', icon: Braces, label: 'Filter' },
-  position: { color: 'oklch(0.7 0.22 300)', icon: Boxes, label: 'Position' },
+  entry: { color: 'oklch(0.96 0.002 240)', icon: ArrowRight, label: 'Entry' },
+  exit: { color: 'oklch(0.70 0.005 240)', icon: ArrowRight, label: 'Exit' },
+  risk: { color: 'oklch(0.55 0.005 240)', icon: Settings2, label: 'Risk' },
+  filter: { color: 'oklch(0.85 0.002 240)', icon: Braces, label: 'Filter' },
+  position: { color: 'oklch(0.40 0.005 240)', icon: Boxes, label: 'Position' },
 }
 
 interface BacktestResult {
@@ -332,8 +332,8 @@ ${blocks.map((b) => `  • [${b.type.toUpperCase()}] ${b.name} (${b.param} = ${b
                   <AreaChart data={result.equityCurve} margin={{ top: 8, right: 0, left: 0, bottom: 0 }}>
                     <defs>
                       <linearGradient id="grad-bt" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="oklch(0.7 0.18 158)" stopOpacity={0.4} />
-                        <stop offset="100%" stopColor="oklch(0.7 0.18 158)" stopOpacity={0} />
+                        <stop offset="0%" stopColor="var(--foreground)" stopOpacity={0.35} />
+                        <stop offset="100%" stopColor="var(--foreground)" stopOpacity={0} />
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
@@ -343,7 +343,7 @@ ${blocks.map((b) => `  • [${b.type.toUpperCase()}] ${b.name} (${b.param} = ${b
                       contentStyle={{ background: 'var(--popover)', border: '1px solid var(--border)', borderRadius: 8, fontSize: 12 }}
                       formatter={(v: number) => `$${v.toLocaleString('en-US', { minimumFractionDigits: 0 })}`}
                     />
-                    <Area type="monotone" dataKey="value" stroke="oklch(0.7 0.18 158)" strokeWidth={2} fill="url(#grad-bt)" />
+                    <Area type="monotone" dataKey="value" stroke="var(--foreground)" strokeWidth={2} fill="url(#grad-bt)" />
                   </AreaChart>
                 </ResponsiveContainer>
               </CardContent>

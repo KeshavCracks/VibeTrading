@@ -175,8 +175,8 @@ export function Dashboard() {
                 <AreaChart data={merged} margin={{ top: 8, right: 0, left: 0, bottom: 0 }}>
                   <defs>
                     <linearGradient id="grad-portfolio" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="oklch(0.7 0.18 158)" stopOpacity={0.4} />
-                      <stop offset="100%" stopColor="oklch(0.7 0.18 158)" stopOpacity={0} />
+                      <stop offset="0%" stopColor="var(--foreground)" stopOpacity={0.35} />
+                      <stop offset="100%" stopColor="var(--foreground)" stopOpacity={0} />
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
@@ -191,7 +191,7 @@ export function Dashboard() {
                     }}
                     formatter={(v: number) => `$${v.toLocaleString('en-US', { minimumFractionDigits: 0 })}`}
                   />
-                  <Area type="monotone" dataKey="portfolio" stroke="oklch(0.7 0.18 158)" strokeWidth={2} fill="url(#grad-portfolio)" name="Portfolio" />
+                  <Area type="monotone" dataKey="portfolio" stroke="var(--foreground)" strokeWidth={2} fill="url(#grad-portfolio)" name="Portfolio" />
                   <Line type="monotone" dataKey="benchmark" stroke="var(--muted-foreground)" strokeWidth={1.5} strokeDasharray="4 4" name="SPY Benchmark" dot={false} />
                   <Legend wrapperStyle={{ fontSize: 11, paddingTop: 8 }} />
                 </AreaChart>
@@ -276,7 +276,7 @@ export function Dashboard() {
                 {SECTORS.map((s) => {
                   const intensity = Math.min(1, Math.abs(s.change) / 3)
                   const bg = s.change >= 0
-                    ? `oklch(0.7 0.18 158 / ${0.15 + intensity * 0.5})`
+                    ? `oklch(0.96 0.002 240 / ${0.15 + intensity * 0.5})`
                     : `oklch(0.7 0.22 16 / ${0.15 + intensity * 0.5})`
                   return (
                     <div key={s.name} className="flex items-center gap-2">
