@@ -7,7 +7,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Badge } from '@/components/ui/badge'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 
 interface Message {
@@ -38,7 +37,8 @@ export function Agent() {
   const scrollRef = React.useRef<HTMLDivElement>(null)
 
   React.useEffect(() => {
-    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
+    const el = scrollRef.current
+    if (el) el.scrollTop = el.scrollHeight
   }, [messages, loading])
 
   async function send(prompt?: string) {
@@ -110,31 +110,43 @@ export function Agent() {
               factor research, backtesting, and portfolio analytics.
             </p>
           </div>
-          <Button variant="ghost" size="sm" onClick={reset} className="gap-1.5 self-start md:self-end">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={reset}
+            className="gap-1.5 self-start md:self-end"
+          >
             <Trash2 className="w-4 h-4" /> Clear
           </Button>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
-          <Card className="lg:col-span-3">
-            <CardHeader className="pb-3">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 items-start">
+          {/* Chat panel */}
+          <Card className="lg:col-span-3 flex flex-col overflow-hidden">
+            <CardHeader className="pb-3 shrink-0">
               <CardTitle className="flex items-center gap-2 text-base">
-                <div className="relative">
+                <div className="relative shrink-0">
                   <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
                     <Bot className="w-4 h-4 text-primary" />
                   </div>
                   <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-card" />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <div>VibeAgent</div>
-                  <div className="text-xs font-normal text-muted-foreground flex items-center gap-1">
-                    <Sparkles className="w-3 h-3" /> Online · 68 tools · 456 alphas
+                  <div className="text-xs font-normal text-muted-foreground flex items-center gap-1 truncate">
+                    <Sparkles className="w-3 h-3 shrink-0" />
+                    <span className="truncate">Online · 68 tools · 456 alphas</span>
                   </div>
                 </div>
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <ScrollArea className="h-[460px] pr-3" ref={scrollRef}>
+
+            <CardContent className="flex flex-col gap-3 p-4 pt-0">
+              {/* Message list — plain div + overflow for reliable scrolling */}
+              <div
+                ref={scrollRef}
+                className="h-[440px] overflow-y-auto scrollbar-thin pr-1 pl-1 -ml-1 -mr-1"
+              >
                 <div className="space-y-4">
                   <AnimatePresence initial={false}>
                     {messages.map((m, i) => (
@@ -142,13 +154,16 @@ export function Agent() {
                         key={i}
                         initial={{ opacity: 0, y: 8 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className={cn('flex gap-3', m.role === 'user' && 'flex-row-reverse')}
+                        className={cn(
+                          'flex gap-2.5',
+                          m.role === 'user' ? 'flex-row-reverse' : 'flex-row'
+                        )}
                       >
                         <div
                           className={cn(
-                            'w-8 h-8 rounded-full flex items-center justify-center shrink-0',
+                            'w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-0.5',
                             m.role === 'user'
-                              ? 'bg-muted'
+                              ? 'bg-foreground text-background'
                               : 'bg-primary/10'
                           )}
                         >
@@ -160,20 +175,22 @@ export function Agent() {
                         </div>
                         <div
                           className={cn(
-                            'rounded-2xl px-4 py-2.5 max-w-[80%] text-sm leading-relaxed',
+                            'px-3.5 py-2.5 text-sm leading-relaxed min-w-0',
+                            'rounded-2xl max-w-[calc(100%-2.75rem)]',
+                            'break-words [overflow-wrap:anywhere]',
                             m.role === 'user'
-                              ? 'bg-primary text-primary-foreground rounded-tr-sm'
+                              ? 'bg-foreground text-background rounded-tr-sm'
                               : 'bg-muted rounded-tl-sm'
                           )}
                         >
-                          <MarkdownLite content={m.content} />
+                          <MarkdownLite content={m.content} userSide={m.role === 'user'} />
                         </div>
                       </motion.div>
                     ))}
                   </AnimatePresence>
                   {loading && (
-                    <div className="flex gap-3">
-                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                    <div className="flex gap-2.5">
+                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
                         <Bot className="w-4 h-4 text-primary" />
                       </div>
                       <div className="bg-muted rounded-2xl rounded-tl-sm px-4 py-3 flex items-center gap-2 text-sm text-muted-foreground">
@@ -183,9 +200,10 @@ export function Agent() {
                     </div>
                   )}
                 </div>
-              </ScrollArea>
+              </div>
 
-              <div className="mt-4 flex gap-2">
+              {/* Input row — wraps cleanly on small screens */}
+              <div className="flex gap-2 shrink-0">
                 <Textarea
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
@@ -196,14 +214,15 @@ export function Agent() {
                     }
                   }}
                   placeholder="Ask about a stock, strategy, risk, or alpha factor…"
-                  className="min-h-[44px] max-h-32 resize-none"
+                  className="min-h-[44px] max-h-32 resize-none flex-1"
                   rows={1}
                 />
                 <Button
                   onClick={() => send()}
                   disabled={loading || !input.trim()}
                   size="icon"
-                  className="h-11 w-11 shrink-0"
+                  className="h-11 w-11 shrink-0 self-end"
+                  aria-label="Send message"
                 >
                   <Send className="w-4 h-4" />
                 </Button>
@@ -211,7 +230,8 @@ export function Agent() {
             </CardContent>
           </Card>
 
-          <Card>
+          {/* Suggested prompts */}
+          <Card className="lg:sticky lg:top-20">
             <CardHeader className="pb-3">
               <CardTitle className="text-base">Try asking</CardTitle>
             </CardHeader>
@@ -223,7 +243,7 @@ export function Agent() {
                   disabled={loading}
                   className="w-full text-left text-sm p-3 rounded-lg border border-border hover:border-primary/40 hover:bg-muted/40 transition-colors disabled:opacity-50"
                 >
-                  <Sparkles className="w-3 h-3 inline-block mr-1.5 text-primary" />
+                  <Sparkles className="w-3 h-3 inline-block mr-1.5 text-primary align-text-bottom" />
                   {p}
                 </button>
               ))}
@@ -236,7 +256,13 @@ export function Agent() {
 }
 
 // Tiny markdown renderer for **bold** and `code` and bullet lists
-function MarkdownLite({ content }: { content: string }) {
+function MarkdownLite({
+  content,
+  userSide = false,
+}: {
+  content: string
+  userSide?: boolean
+}) {
   const lines = content.split('\n')
   return (
     <div className="space-y-1">
@@ -244,12 +270,12 @@ function MarkdownLite({ content }: { content: string }) {
         if (line.trim() === '') return <div key={i} className="h-1" />
         const isBullet = /^\s*[-*]\s+/.test(line)
         const text = line.replace(/^\s*[-*]\s+/, '')
-        const parts = parseInline(text)
+        const parts = parseInline(text, userSide)
         if (isBullet) {
           return (
             <div key={i} className="flex gap-2">
-              <span className="text-primary">•</span>
-              <span>{parts}</span>
+              <span className={userSide ? 'opacity-70' : 'text-primary'}>•</span>
+              <span className="min-w-0">{parts}</span>
             </div>
           )
         }
@@ -259,7 +285,7 @@ function MarkdownLite({ content }: { content: string }) {
   )
 }
 
-function parseInline(text: string): React.ReactNode[] {
+function parseInline(text: string, userSide = false): React.ReactNode[] {
   const parts: React.ReactNode[] = []
   const regex = /(\*\*[^*]+\*\*|`[^`]+`|\*[^*]+\*)/g
   let last = 0
@@ -272,7 +298,13 @@ function parseInline(text: string): React.ReactNode[] {
       parts.push(<strong key={key++}>{tok.slice(2, -2)}</strong>)
     } else if (tok.startsWith('`')) {
       parts.push(
-        <code key={key++} className="px-1 py-0.5 rounded bg-background/60 text-xs font-mono">
+        <code
+          key={key++}
+          className={cn(
+            'px-1 py-0.5 rounded text-xs font-mono break-all',
+            userSide ? 'bg-background/20' : 'bg-background/80 text-foreground'
+          )}
+        >
           {tok.slice(1, -1)}
         </code>
       )
